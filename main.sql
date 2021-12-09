@@ -55,11 +55,30 @@ CREATE TABLE IF NOT EXISTS `wohnung` (
 
 -- Daten Export vom Benutzer nicht ausgewählt
 
+CREATE TABLE IF NOT EXISTS `person` (
+    `ID` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `strasseId` int(11) NOT NULL,
+    `hausNr` int(11) NOT NULL
+    KEY `FK_person_strasse` (`strasseId`),
+    CONSTRAINT `FK_person_strasse` FOREIGN KEY (`strasseId`) REFERENCES `strasse` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 -- Exportiere Struktur von Tabelle test.wohnung_person
 CREATE TABLE IF NOT EXISTS `wohnung_person` (
   `wohnungId` int(11) NOT NULL,
   `personId` int(11) NOT NULL,
-  `wohnobjektId` int(11) NOT NULL
+  `wohnobjektId` int(11) NOT NULL,
+  KEY `FK_wohnung_person_wohnung` (`wohnungId`),
+  CONSTRAINT `FK_wohnung_person_wohnung` FOREIGN KEY (`wohnungId`) REFERENCES `wohnung` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  KEY `FK_wohnung_person_person` (`personId`),
+  CONSTRAINT `FK_wohnung_person_person` FOREIGN KEY (`personId`) REFERENCES `person` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  KEY `FK_wohnung_person_wohnobjekt` (`wohnobjektId`),
+  CONSTRAINT `FK_wohnung_person_wohnobjekt` FOREIGN KEY (`wohnobjektId`) REFERENCES `wohnobjekt` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `strasse` (
+    `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Daten Export vom Benutzer nicht ausgewählt
